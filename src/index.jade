@@ -1,0 +1,354 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Beyond PHP4
+
+    link(href="http://fonts.googleapis.com/css?family=Open+Sans:300,600", rel="stylesheet", type="text/css")
+    link(href="http://fonts.googleapis.com/css?family=Ubuntu", rel="stylesheet", type="text/css")
+
+    // build:css styles/styles.css
+    //- Check out 'src/bower_components/prism/themes/' for available themes
+    link(rel='stylesheet', type='text/css', href='bower_components/prism/themes/prism-okaidia.css')
+    link(rel='stylesheet', type='text/css', href='styles/main.css')
+    // endbuild
+
+  body
+
+    article
+
+      section
+        h1 Beyond PHP4
+        h3 The beautiful world of cutting edge PHP
+
+      section
+        h2 When critics think of PHP, they think of version 4
+
+      section
+        h2 However, version 5 has gradually taken PHP to a new height
+        h3 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6
+
+      section
+        h2.alt Syntax Improvements
+
+      section
+        h2 Array Syntax
+        hr
+        pre
+          code.language-php.
+            // Works on all versions
+            $games = array('football', 'cricket', 'basketball');
+            print_r($games);
+
+            // Works on 5.4+
+            $games = ['football', 'cricket', 'basketball'];
+            print_r($games);
+
+      section
+        h2 Instant access to new objects
+        hr
+        pre
+          code.language-php.
+            // Old way
+            $postModel = new Post();
+            $latestPosts = $postModel->getLatest();
+
+            // Works on 5.4+
+            $latestPosts = (new Post())->getLatest();
+
+      section
+        h2 Instant access to returned arrays
+        hr
+        pre
+          code.language-php.
+            // Old way
+            $postModel = new Post();
+            $latestPosts = $postModel->getLatest();
+            $firstPost = $latestPosts[0];
+
+            // Works on 5.4+
+            $firstPost = (new Post())->getLatest()[0];
+
+      section
+        h2 New Ternary Operator
+        hr
+        pre
+          code.language-php.
+            // Old way
+            $action = $_POST['action'] ? $_POST['action'] : 'default_action';
+
+            // Works on 5.3+
+            $action = $_POST['action'] ?: 'default_action';
+
+      section
+        h2.alt Namespaces
+
+      section
+        h2 Prevents naming conflict
+        h2 Keep things organized
+
+      section
+        h2 Before namespaces
+        hr
+        pre
+          code.language-php.
+            // modules/blog/Post.php
+            class Post { ... }
+
+            // modules/news/Post.php
+            class Post { ... }
+
+            $post = new Post();
+
+      section
+        pre
+          code.language-php.
+            Fatal error: Cannot redeclare class Post
+
+      section
+        h2 After namespaces
+        hr
+        pre
+          code.language-php.
+            // modules/blog/Post.php
+            namespace Blog;
+            class Post { ... }
+
+            // modules/news/Post.php
+            namespace News;
+            class Post { ... }
+
+            $post = new Blog\Post();
+
+      section
+        h2.alt Closures
+
+      section
+        h2 Very common in languages like JavaScript
+        h3 Now extremely popular in PHP
+
+      section
+        h2 Javascript Usage (jQuery)
+        hr
+        pre
+          code.language-javascript.
+            $('.hide').click(function(){
+                $(this).hide();
+            });
+
+      section
+        h2 PHP Usage
+        hr
+        pre
+          code.language-php.
+            // Old way
+            function is_even($n) {
+                return $n % 2 === 0;
+            }
+
+            $numbers = [1, 2, 3, 4, 5];
+            $evens = array_filter($numbers, "is_even");
+
+            // New way
+            $numbers = [1, 2, 3, 4, 5];
+            $evens = array_filter($numbers, function($n){
+                return $n % 2 === 0;
+            });
+
+      section
+        h2.alt Type Hinting
+
+      section
+        h2 Force methods to only accept certain types of arguments
+
+      section
+        pre
+          code.language-php.
+            class Post
+            {
+                protected $author;
+                protected $tags = [];
+
+                public function __construct(Author $author, array $tags)
+                {
+                    $this->author = $author;
+                    $this->tags = $tags;
+                }
+            }
+
+      section
+        h2.alt Traits
+        h3 PHP 5.4+
+
+      section
+        h2 Alternative to multi-class inheritance
+        h2 Re-usable group of methods
+
+      section
+        pre
+          code.language-php.
+            trait Taggable
+            {
+                public function getTags()
+                {
+                    return Tag::where('post_id', '=', $this->id)->get();
+                }
+
+                public function countTags()
+                {
+                    return Tag::where('post_id', '=', $this->id)->count();
+                }
+            }
+
+      section
+        pre
+          code.language-php.
+            trait Categorizeable
+            {
+                public function getCategories()
+                {
+                    return Category::where('post_id', '=', $this->id)->get();
+                }
+
+                public function countCategories()
+                {
+                    return Category::where('post_id', '=', $this->id)->count();
+                }
+            }
+
+      section
+        pre
+          code.language-php.
+            class Post
+            {
+                use Taggable, Categorizeable;
+
+                protected $id;
+
+                public function __construct($id = null)
+                {
+                    $this->id = $id;
+                }
+            }
+
+            $post = new Post(1);
+            $tags = $post->getTags();
+            $categories = $post->getCategories();
+
+      section
+        h2.alt Other Major Improvements
+
+      section
+        h2 Standard PHP Library (SPL)
+
+      section
+        h2 Exceptions
+
+      section
+        h2 PDO
+
+      section
+        h2 DateTime and DateTimeZone
+
+      section
+        h2 Generators
+        h3 PHP 5.5+
+
+      section
+        h2 Password Hashing API
+        h3 PHP 5.5+
+
+      section
+        h2.alt Standards
+
+      section
+        h2 PSR Standards
+        ul
+          li PSR-0: Autoloading standard
+          li PSR-1: Basic coding standard
+          li PSR-2: Coding style guide
+          li PSR-3: Logger interface
+          li PSR-4: Improved autoloading
+
+      section
+        h2 Tests
+        ul
+          li Unit tests
+          li Functional tests
+          li TDD
+          li BDD
+          li Continuous integration
+          li Code coverage
+
+      section
+        h2.alt Frameworks
+
+      section
+        h2 Lots of good frameworks have emerged
+        h2 Traditional MVC is old-school
+        h2 CodeIginer is on life support
+
+      section
+        h2 Micro is the new big thing
+        ul
+          li Slim
+          li Silex
+
+      section
+        h2 For serious stuff
+        ul
+          li Symfony2
+          li Laravel
+          li ZF2
+          li Yii
+
+      section
+        h1 Final Thoughts
+
+      section
+        h2 PHP has grown up a lot
+        h3 Make sure you utilize it to the fullest potential
+
+      section
+        h2 Read "PHP The Right Way"
+        h3 http://www.phptherightway.com/
+
+      section
+        h2 References
+        hr
+        h4
+          a(href="https://speakerdeck.com/ramsey/modern-php-php-tek-2014") Modern PHP by Ben Ramsey
+        h4
+          a(href="https://speakerdeck.com/carlosbuenosvinos/15") PHP 2014/15 by Carlos Buenosvinos
+        h4
+          a(href="https://speakerdeck.com/akuzemchak/the-state-of-php-2013") The State of PHP by Aaron Kuzemchak
+
+      section
+        h1 Thanks!
+
+      section
+        h2 About Me
+        pre
+          code.language-php.
+            $about = [
+                'name'  => 'Mohammad Emran Hasan',
+                'email' => 'phpfour@gmail.com',
+                'web'   => 'http://emranhasan.com'
+            ];
+
+            $slide = 'http://phpfour.com/beyond-php4';
+
+    // build:js scripts/scripts.js
+    script(src='bower_components/bespoke.js/dist/bespoke.min.js')
+    script(src='bower_components/bespoke-keys/dist/bespoke-keys.min.js')
+    script(src='bower_components/bespoke-touch/dist/bespoke-touch.min.js')
+    script(src='bower_components/bespoke-bullets/dist/bespoke-bullets.min.js')
+    script(src='bower_components/bespoke-scale/dist/bespoke-scale.min.js')
+    script(src='bower_components/bespoke-hash/dist/bespoke-hash.min.js')
+    script(src='bower_components/bespoke-progress/dist/bespoke-progress.min.js')
+    script(src='bower_components/bespoke-state/dist/bespoke-state.min.js')
+    script(src='bower_components/prism/prism.js')
+    script(src='bower_components/prism/components/prism-php.min.js')
+    script(src='scripts/main.js')
+    // endbuild
